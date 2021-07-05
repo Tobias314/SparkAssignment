@@ -2,6 +2,8 @@ package de.hpi.spark_tutorial
 
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.SparkSession
+import de.hpi.spark_tutorial.{LongestCommonSubstring, Sindy, Tutorial}
+import org.apache.spark.SparkContext
 
 object SimpleSpark extends App {
 
@@ -46,9 +48,12 @@ object SimpleSpark extends App {
     val sparkBuilder = SparkSession
       .builder()
       .appName("SparkTutorial")
-      .master(s"local[$cores]") // local, with $cores worker cores
+      .master(s"local[$cores]")
+    .config("spark.driver.maxResultSize", "8g")// local, with $cores worker cores
     val spark = sparkBuilder.getOrCreate()
 
+    //spark.conf.set("spark.sql.legacy.setCommandRejectsSparkCoreConfs","false")
+    //spark.conf.set("spark.driver.maxResultSize", "8g")
     // Set the default number of shuffle partitions (default is 200, which is too high for local deployment)
     spark.conf.set("spark.sql.shuffle.partitions", partitions.toString)
 
@@ -58,13 +63,13 @@ object SimpleSpark extends App {
     // Spark Tutorial
     //------------------------------------------------------------------------------------------------------------------
 
-    Tutorial.execute(spark)
+    //Tutorial.execute(spark)
 
     //------------------------------------------------------------------------------------------------------------------
     // Longest Common Substring Search
     //------------------------------------------------------------------------------------------------------------------
 
-    time {LongestCommonSubstring.discoverLCSs("students2", spark)}
+    //time {LongestCommonSubstring.discoverLCSs("students2", spark)}
 
     //------------------------------------------------------------------------------------------------------------------
     // Inclusion Dependency Discovery (Homework)
